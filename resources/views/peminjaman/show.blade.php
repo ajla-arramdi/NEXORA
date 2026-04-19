@@ -55,7 +55,7 @@
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th>Alat</th>
+                            <th>Produk</th>
                             <th>Jumlah</th>
                             <th>Kondisi Keluar</th>
                             <th>Catatan</th>
@@ -63,11 +63,20 @@
                     </thead>
                     <tbody class="divide-y divide-stone-100 bg-white">
                         @foreach ($peminjaman->details as $detail)
-                            <tr>
-                                <td>{{ $detail->alat->nama_alat }}</td>
-                                <td>{{ $detail->qty }}</td>
-                                <td>{{ $detail->kondisi_keluar }}</td>
-                                <td>{{ $detail->catatan ?: '-' }}</td>
+                            <tr class="hover:bg-slate-50/50 transition-colors">
+                                <td class="px-6 py-3.5 font-semibold text-slate-900">
+                                    {{ $detail->produk->nama_produk }}
+                                    @if($detail->produkItems->isNotEmpty())
+                                        <div class="mt-1 flex flex-wrap gap-1">
+                                            @foreach($detail->produkItems as $pItem)
+                                                <span class="inline-flex rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-bold tracking-wider text-slate-500">{{ $pItem->kode_barang }}</span>
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                </td>
+                                <td class="px-6 py-3.5 text-slate-600">{{ $detail->qty }}</td>
+                                <td class="px-6 py-3.5 text-slate-600">{{ $detail->kondisi_keluar }}</td>
+                                <td class="px-6 py-3.5 text-slate-500">{{ $detail->catatan ?: '-' }}</td>
                             </tr>
                         @endforeach
                     </tbody>

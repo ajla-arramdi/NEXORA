@@ -18,7 +18,7 @@ class StorePeminjamanRequest extends FormRequest
             'tanggal_rencana_kembali' => ['required', 'date', 'after_or_equal:tanggal_pinjam'],
             'catatan' => ['nullable', 'string'],
             'items' => ['required', 'array', 'min:1'],
-            'items.*.alat_id' => ['required', 'distinct', 'exists:alats,id'],
+            'items.*.produk_id' => ['required', 'distinct', 'exists:produks,id'],
             'items.*.qty' => ['nullable', 'integer', 'min:0'],
         ];
     }

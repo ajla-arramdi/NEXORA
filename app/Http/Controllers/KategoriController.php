@@ -13,7 +13,7 @@ class KategoriController extends Controller
 {
     public function index(): View
     {
-        $kategoris = Kategori::query()->withCount('alats')->latest()->paginate(10);
+        $kategoris = Kategori::query()->withCount('subKategoris')->latest()->paginate(10);
 
         return view('kategori.index', compact('kategoris'));
     }
@@ -48,8 +48,13 @@ class KategoriController extends Controller
 
     public function destroy(Kategori $kategori): RedirectResponse
     {
-        $nama = $kategori->nama;
-        $kategori->delete();
+        $nama = $kategori->nama_kategori;
+        
+        try {
+            $kategori->delete();
+        } catch (\Illuminate\Database\QueryException $e) {
+            return redirect()->route('kategori.index')->withErrors(['kategori' => "Kategori {$nama} tidak bisa dihapus karena masih terkait dengan Sub-Kategori atau data Alat lama. Harap hapus sub-kategori terkait terlebih dahulu."]);
+        }
 
         ActivityLogger::log(request()->user(), 'Menghapus kategori', 'Kategori', "Kategori {$nama} berhasil dihapus.");
 

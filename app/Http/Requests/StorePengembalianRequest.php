@@ -18,7 +18,7 @@ class StorePengembalianRequest extends FormRequest
             'tanggal_kembali' => ['required', 'date'],
             'catatan' => ['nullable', 'string'],
             'items' => ['required', 'array', 'min:1'],
-            'items.*.alat_id' => ['required', 'distinct', 'exists:alats,id'],
+            'items.*.produk_id' => ['required', 'distinct', 'exists:produks,id'],
             'items.*.qty_kembali' => ['nullable', 'integer', 'min:0'],
             'items.*.kondisi_masuk' => ['required', 'string', 'max:100'],
             'items.*.catatan' => ['nullable', 'string'],

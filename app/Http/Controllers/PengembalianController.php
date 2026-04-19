@@ -19,7 +19,7 @@ class PengembalianController extends Controller
     public function index(): View
     {
         $user = request()->user();
-        $query = Pengembalian::query()->with(['peminjaman.user', 'petugas', 'details.alat'])->latest();
+        $query = Pengembalian::query()->with(['peminjaman.user', 'petugas', 'details.produk'])->latest();
 
         if ($user->isPeminjam()) {
             $query->whereHas('peminjaman', fn ($builder) => $builder->where('user_id', $user->id));
@@ -34,7 +34,7 @@ class PengembalianController extends Controller
     {
         $user = $request->user();
         $query = Peminjaman::query()
-            ->with(['details.alat', 'user'])
+            ->with(['details.produk', 'user'])
             ->where('status', 'disetujui')
             ->whereDoesntHave('pengembalian')
             ->latest();
@@ -56,7 +56,7 @@ class PengembalianController extends Controller
     public function store(StorePengembalianRequest $request): RedirectResponse
     {
         $validated = $request->validated();
-        $peminjaman = Peminjaman::query()->with(['details.alat', 'user', 'pengembalian'])->findOrFail($request->input('peminjaman_id'));
+        $peminjaman = Peminjaman::query()->with(['details.produk', 'user', 'pengembalian'])->findOrFail($request->input('peminjaman_id'));
 
         if ($request->user()->isPeminjam() && $peminjaman->user_id !== $request->user()->id) {
             abort(403);
@@ -70,7 +70,7 @@ class PengembalianController extends Controller
     public function show(Pengembalian $pengembalian): View
     {
         $user = request()->user();
-        $pengembalian->load(['peminjaman.user', 'petugas', 'details.alat']);
+        $pengembalian->load(['peminjaman.user', 'petugas', 'details.produk']);
 
         if ($user->isPeminjam() && $pengembalian->peminjaman->user_id !== $user->id) {
             abort(403);

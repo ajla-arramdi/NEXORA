@@ -17,7 +17,7 @@ class PengembalianService
 
     public function create(array $validated, Peminjaman $peminjaman, User $aktor): Pengembalian
     {
-        $peminjaman->loadMissing('details.alat', 'user', 'pengembalian');
+        $peminjaman->loadMissing('details.produk', 'user', 'pengembalian');
 
         if ($peminjaman->status !== 'disetujui') {
             throw ValidationException::withMessages([
@@ -33,7 +33,7 @@ class PengembalianService
 
         $items = collect($validated['items'] ?? [])
             ->map(fn (array $item) => [
-                'alat_id' => (int) $item['alat_id'],
+                'produk_id' => (int) $item['produk_id'],
                 'qty_kembali' => (int) ($item['qty_kembali'] ?? 0),
                 'kondisi_masuk' => $item['kondisi_masuk'],
                 'catatan' => $item['catatan'] ?? null,
@@ -62,7 +62,7 @@ class PengembalianService
             ]);
 
             foreach ($items as $item) {
-                $detailPeminjaman = $peminjaman->details->firstWhere('alat_id', $item['alat_id']);
+                $detailPeminjaman = $peminjaman->details->firstWhere('produk_id', $item['produk_id']);
 
                 if (! $detailPeminjaman) {
                     throw ValidationException::withMessages([
@@ -72,7 +72,7 @@ class PengembalianService
 
                 if ($item['qty_kembali'] !== $detailPeminjaman->qty) {
                     throw ValidationException::withMessages([
-                        'items' => "Jumlah pengembalian {$detailPeminjaman->alat->nama_alat} harus sama dengan jumlah pinjam.",
+                        'items' => "Jumlah pengembalian harus sama dengan jumlah pinjam.",
                     ]);
                 }
 
@@ -100,14 +100,14 @@ class PengembalianService
                 ],
             );
 
-            return $pengembalian->load('details.alat', 'peminjaman.user', 'petugas');
+            return $pengembalian->load('details.produk', 'peminjaman.user', 'petugas');
         });
     }
 
     public function terima(Pengembalian $pengembalian, User $petugas, ?string $catatan = null): void
     {
         DB::transaction(function () use ($pengembalian, $petugas, $catatan) {
-            $pengembalian->loadMissing('details.alat', 'peminjaman.user');
+            $pengembalian->loadMissing('details.produk', 'peminjaman.user');
 
             if ($pengembalian->status !== 'diajukan') {
                 throw ValidationException::withMessages([
@@ -135,13 +135,30 @@ class PengembalianService
 
     private function applyAcceptedReturn(Pengembalian $pengembalian): void
     {
-        $pengembalian->loadMissing('details.alat', 'peminjaman');
+        $pengembalian->loadMissing('details.produk', 'peminjaman.details.produkItems');
 
         foreach ($pengembalian->details as $detail) {
-            $alat = Alat::findOrFail($detail->alat_id);
-            $alat->stok_tersedia += $detail->qty_kembali;
-            $alat->status = 'Tersedia';
-            $alat->save();
+            $peminjamanDetail = $pengembalian->peminjaman->details->firstWhere('produk_id', $detail->produk_id);
+            
+            if ($peminjamanDetail) {
+                // Determine exactly which items were borrowed in this transaction
+                $itemsReturned = $peminjamanDetail->produkItems()->take($detail->qty_kembali)->get();
+                
+                // Fallback for legacy transactions that don't have linked specific items
+                if ($itemsReturned->isEmpty()) {
+                    $itemsReturned = \App\Models\ProdukItem::where('produk_id', $detail->produk_id)
+                        ->where('status', 'dipinjam')
+                        ->limit($detail->qty_kembali)
+                        ->get();
+                }
+                
+                foreach ($itemsReturned as $item) {
+                    $item->update([
+                        'status' => 'tersedia',
+                        'kondisi' => strtolower($detail->kondisi_masuk) == 'rusak berat' ? 'rusak berat' : (strtolower($detail->kondisi_masuk) == 'rusak ringan' ? 'rusak ringan' : 'baik')
+                    ]);
+                }
+            }
         }
 
         $pengembalian->peminjaman->update([

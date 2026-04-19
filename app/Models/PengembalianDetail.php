@@ -13,7 +13,7 @@ class PengembalianDetail extends Model
 
     protected $fillable = [
         'pengembalian_id',
-        'alat_id',
+        'produk_id',
         'qty_kembali',
         'kondisi_masuk',
         'catatan',
@@ -24,8 +24,8 @@ class PengembalianDetail extends Model
         return $this->belongsTo(Pengembalian::class, 'pengembalian_id');
     }
 
-    public function alat()
+    public function produk()
     {
-        return $this->belongsTo(Alat::class, 'alat_id');
+        return $this->belongsTo(Produk::class, 'produk_id');
     }
 }

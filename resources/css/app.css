@@ -2,111 +2,123 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-    --paper: #f6f1e8;
-    --paper-soft: #fbf8f3;
-    --ink: #172033;
-    --ink-soft: #3f4a63;
-    --line: #d8cfbf;
-    --accent: #d16a2d;
-    --accent-soft: #f3d8c5;
-    --success: #2e7d5b;
-    --warning: #b7791f;
-    --danger: #b54343;
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
 
 body {
-    background:
-        radial-gradient(circle at top right, rgba(209, 106, 45, 0.08), transparent 30%),
-        linear-gradient(180deg, #fcfaf7 0%, var(--paper) 100%);
-    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    background-color: #f8fafc;
+    background-image:
+        radial-gradient(at 40% 20%, hsla(228, 100%, 74%, 0.15) 0px, transparent 50%),
+        radial-gradient(at 80% 0%, hsla(189, 100%, 56%, 0.15) 0px, transparent 50%),
+        radial-gradient(at 0% 50%, hsla(355, 100%, 93%, 0.15) 0px, transparent 50%);
+    background-attachment: fixed;
+    color: #0f172a;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.page-title,
+.font-heading {
+    font-family: 'Outfit', sans-serif;
 }
 
 .panel {
-    @apply rounded-3xl border border-stone-200 bg-white/90 shadow-sm backdrop-blur;
+    @apply rounded-[2rem] border border-white/60 bg-white/70 shadow-[0_8px_30px_rgb(0, 0, 0, 0.04)] backdrop-blur-xl transition-all duration-300;
+}
+
+.panel:hover {
+    @apply shadow-[0_8px_30px_rgb(0, 0, 0, 0.08)];
 }
 
 .panel-muted {
-    @apply rounded-3xl border border-stone-200 bg-stone-50/90;
+    @apply rounded-[2rem] border border-slate-200/60 bg-slate-50/50 backdrop-blur-md;
 }
 
 .page-shell {
-    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8;
 }
 
 .page-title {
-    @apply text-3xl font-semibold tracking-tight text-slate-900;
+    @apply text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900;
 }
 
 .page-subtitle {
-    @apply mt-2 max-w-3xl text-sm leading-6 text-slate-600;
+    @apply mt-2 max-w-3xl text-sm md:text-base leading-relaxed text-slate-500;
 }
 
 .data-table {
-    @apply min-w-full divide-y divide-stone-200 text-sm;
+    @apply min-w-full divide-y divide-slate-200/60 text-sm;
 }
 
 .data-table thead {
-    @apply bg-stone-50;
+    @apply bg-slate-50/50 backdrop-blur-sm;
 }
 
 .data-table th {
-    @apply px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.2em] text-slate-500;
+    @apply px-6 py-4 text-left text-xs font-bold uppercase tracking-widest text-slate-500;
 }
 
 .data-table td {
-    @apply px-4 py-4 align-top text-slate-700;
+    @apply px-6 py-4 align-middle text-slate-700 transition-colors;
+}
+
+.data-table tbody tr {
+    @apply transition-colors hover:bg-slate-50/80;
 }
 
 .badge {
-    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold;
+    @apply inline-flex items-center justify-center rounded-full px-3 py-1 text-xs font-bold tracking-wide shadow-sm backdrop-blur-md border border-white/20;
 }
 
 .badge-admin {
-    @apply bg-slate-900 text-white;
+    @apply bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-indigo-200/50;
 }
 
 .badge-petugas {
-    background: var(--accent-soft);
-    color: var(--accent);
+    @apply bg-gradient-to-r from-fuchsia-500 to-purple-600 text-white shadow-fuchsia-200/50;
 }
 
 .badge-peminjam {
-    @apply bg-emerald-100 text-emerald-700;
+    @apply bg-gradient-to-r from-emerald-400 to-teal-500 text-white shadow-emerald-200/50;
 }
 
 .badge-status-diajukan {
-    @apply bg-amber-100 text-amber-700;
+    @apply bg-amber-100 text-amber-700 border-amber-200;
 }
 
 .badge-status-disetujui,
 .badge-status-diterima,
 .badge-status-dikembalikan,
 .badge-status-tersedia {
-    @apply bg-emerald-100 text-emerald-700;
+    @apply bg-emerald-100 text-emerald-700 border-emerald-200;
 }
 
 .badge-status-ditolak,
 .badge-status-dipinjam {
-    @apply bg-rose-100 text-rose-700;
+    @apply bg-rose-100 text-rose-700 border-rose-200;
 }
 
 .form-input,
 .form-select,
 .form-textarea {
-    @apply mt-2 block w-full rounded-2xl border-stone-300 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-orange-400 focus:ring-orange-400;
+    @apply mt-2 block w-full rounded-2xl border-slate-200 bg-white/80 px-4 py-3 text-sm text-slate-900 shadow-sm transition-all focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10;
 }
 
 .btn-primary {
-    @apply inline-flex items-center justify-center rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800;
+    @apply inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 px-6 py-3 text-sm font-bold tracking-wide text-white shadow-lg shadow-indigo-200 transition-all duration-300 hover:scale-[1.02] hover:shadow-indigo-300 hover:from-indigo-700 hover:to-violet-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2;
 }
 
 .btn-secondary {
-    @apply inline-flex items-center justify-center rounded-2xl border border-stone-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-stone-50;
+    @apply inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white/80 backdrop-blur px-6 py-3 text-sm font-bold tracking-wide text-slate-700 shadow-sm transition-all duration-300 hover:bg-slate-50 hover:border-slate-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2;
 }
 
 .btn-danger {
-    @apply inline-flex items-center justify-center rounded-2xl bg-rose-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-rose-500;
+    @apply inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-rose-500 to-pink-600 px-6 py-3 text-sm font-bold tracking-wide text-white shadow-lg shadow-rose-200 transition-all duration-300 hover:scale-[1.02] hover:shadow-rose-300 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2;
 }
 
 .input-grid {
@@ -115,11 +127,12 @@ body {
 
 .hero-glow {
     background:
-        radial-gradient(circle at top left, rgba(209, 106, 45, 0.18), transparent 28%),
-        radial-gradient(circle at bottom right, rgba(23, 32, 51, 0.12), transparent 32%),
-        linear-gradient(135deg, rgba(255,255,255,0.95), rgba(248,244,238,0.95));
+        radial-gradient(circle at top left, rgba(79, 70, 229, 0.15), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(236, 72, 153, 0.1), transparent 35%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(248, 250, 252, 0.8));
+    @apply backdrop-blur-2xl border border-white/60 shadow-[0_8px_30px_rgb(0, 0, 0, 0.06)];
 }
 
 .print-shell {
-    @apply mx-auto max-w-6xl bg-white p-8 text-slate-900;
+    @apply mx-auto max-w-6xl bg-white p-8 text-slate-900 rounded-[2rem] shadow-2xl;
 }

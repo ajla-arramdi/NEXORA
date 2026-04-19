@@ -16,7 +16,7 @@ class PeminjamanService
     {
         $items = collect($validated['items'] ?? [])
             ->map(fn (array $item) => [
-                'alat_id' => (int) $item['alat_id'],
+                'produk_id' => (int) $item['produk_id'],
                 'qty' => (int) ($item['qty'] ?? 0),
             ])
             ->filter(fn (array $item) => $item['qty'] > 0)
@@ -48,14 +48,14 @@ class PeminjamanService
                 ['kode_peminjaman' => $peminjaman->kode_peminjaman],
             );
 
-            return $peminjaman->load('details.alat', 'user');
+            return $peminjaman->load('details.produk', 'user');
         });
     }
 
     public function approve(Peminjaman $peminjaman, User $petugas, ?string $catatan = null): void
     {
         DB::transaction(function () use ($peminjaman, $petugas, $catatan) {
-            $peminjaman->loadMissing('details.alat', 'user');
+            $peminjaman->loadMissing('details.produk', 'user');
 
             if ($peminjaman->status !== 'diajukan') {
                 throw ValidationException::withMessages([
@@ -64,17 +64,26 @@ class PeminjamanService
             }
 
             foreach ($peminjaman->details as $detail) {
-                $alat = Alat::findOrFail($detail->alat_id);
+                $produk = \App\Models\Produk::findOrFail($detail->produk_id);
+                $itemsToBorrow = \App\Models\ProdukItem::where('produk_id', $produk->id)
+                    ->where('status', 'tersedia')
+                    ->where('kondisi', 'baik')
+                    ->limit($detail->qty)
+                    ->get();
 
-                if ($detail->qty > $alat->stok_tersedia) {
+                if ($itemsToBorrow->count() < $detail->qty) {
                     throw ValidationException::withMessages([
-                        'stok' => "Stok alat {$alat->nama_alat} tidak mencukupi.",
+                        'stok' => "Stok unit {$produk->nama_produk} saat ini tidak mencukupi.",
                     ]);
                 }
 
-                $alat->stok_tersedia -= $detail->qty;
-                $alat->status = $alat->stok_tersedia > 0 ? 'Tersedia' : 'Dipinjam';
-                $alat->save();
+                $itemIds = [];
+                foreach ($itemsToBorrow as $item) {
+                    $item->update(['status' => 'dipinjam']);
+                    $itemIds[] = $item->id;
+                }
+                
+                $detail->produkItems()->sync($itemIds);
             }
 
             $peminjaman->update([
@@ -124,18 +133,22 @@ class PeminjamanService
     private function createDetails(Peminjaman $peminjaman, Collection $items): void
     {
         foreach ($items as $item) {
-            $alat = Alat::findOrFail($item['alat_id']);
+            $produk = \App\Models\Produk::findOrFail($item['produk_id']);
+            $stokTersedia = \App\Models\ProdukItem::where('produk_id', $produk->id)
+                ->where('status', 'tersedia')
+                ->where('kondisi', 'baik')
+                ->count();
 
-            if ($item['qty'] > $alat->stok_tersedia) {
+            if ($item['qty'] > $stokTersedia) {
                 throw ValidationException::withMessages([
-                    'stok' => "Permintaan {$alat->nama_alat} melebihi stok tersedia.",
+                    'stok' => "Permintaan {$produk->nama_produk} melebihi stok tersedia.",
                 ]);
             }
 
             $peminjaman->details()->create([
-                'alat_id' => $alat->id,
+                'produk_id' => $produk->id,
                 'qty' => $item['qty'],
-                'kondisi_keluar' => $alat->kondisi,
+                'kondisi_keluar' => 'Baik',
             ]);
         }
     }

@@ -15,10 +15,15 @@
 
                     @if (auth()->user()->isAdmin())
                         <x-nav-link :href="route('kategori.index')" :active="request()->routeIs('kategori.*')">Kategori</x-nav-link>
-                        <x-nav-link :href="route('alat.index')" :active="request()->routeIs('alat.*')">Alat</x-nav-link>
+                        <x-nav-link :href="route('sub-kategori.index')" :active="request()->routeIs('sub-kategori.*')">Sub Kategori</x-nav-link>
+                        <x-nav-link :href="route('produk.index')" :active="request()->routeIs('produk.*')">Produk</x-nav-link>
+                        <x-nav-link :href="route('produk-item.index')" :active="request()->routeIs('produk-item.*')">Produk Item</x-nav-link>
                     @endif
 
-                    <x-nav-link :href="route('peminjaman.index')" :active="request()->routeIs('peminjaman.*')">Peminjaman</x-nav-link>
+                    @if (auth()->user()->isPeminjam())
+                        <x-nav-link :href="route('alat.index')" :active="request()->routeIs('alat.index')">Katalog Inventaris</x-nav-link>
+                    @endif
+                    <x-nav-link :href="route('peminjaman.index')" :active="request()->routeIs('peminjaman.index', 'peminjaman.show')">Peminjaman</x-nav-link>
                     <x-nav-link :href="route('pengembalian.index')" :active="request()->routeIs('pengembalian.*')">Pengembalian</x-nav-link>
 
                     @if (auth()->user()->isAdmin())
@@ -70,10 +75,15 @@
 
             @if (auth()->user()->isAdmin())
                 <x-responsive-nav-link :href="route('kategori.index')" :active="request()->routeIs('kategori.*')">Kategori</x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('alat.index')" :active="request()->routeIs('alat.*')">Alat</x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('sub-kategori.index')" :active="request()->routeIs('sub-kategori.*')">Sub Kategori</x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('produk.index')" :active="request()->routeIs('produk.*')">Produk</x-responsive-nav-link>
+               <x-responsive-nav-link :href="route('produk-item.index')" :active="request()->routeIs('produk-item.*')">Produk Item</x-responsive-nav-link>
             @endif
 
-            <x-responsive-nav-link :href="route('peminjaman.index')" :active="request()->routeIs('peminjaman.*')">Peminjaman</x-responsive-nav-link>
+            @if (auth()->user()->isPeminjam())
+                <x-responsive-nav-link :href="route('alat.index')" :active="request()->routeIs('alat.index')">Katalog Inventaris</x-responsive-nav-link>
+            @endif
+            <x-responsive-nav-link :href="route('peminjaman.index')" :active="request()->routeIs('peminjaman.index', 'peminjaman.show')">Peminjaman</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('pengembalian.index')" :active="request()->routeIs('pengembalian.*')">Pengembalian</x-responsive-nav-link>
 
             @if (auth()->user()->isAdmin())

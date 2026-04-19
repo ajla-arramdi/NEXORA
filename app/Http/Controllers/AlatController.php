@@ -14,9 +14,22 @@ class AlatController extends Controller
 {
     public function index(): View
     {
-        $alats = Alat::query()->with('kategori')->latest()->paginate(10);
+        $user = request()->user();
+        if ($user->isAdmin()) {
+            return view('alat.index', ['produks' => \App\Models\Produk::withCount(['produkItems as stok_tersedia' => function($q) {
+                $q->where('status', 'tersedia')->where('kondisi', 'baik');
+            }])->latest()->paginate(12)]);
+        }
+        
+        $produks = \App\Models\Produk::with('subKategori')
+            ->withCount(['produkItems as stok_tersedia' => function($q) {
+                $q->where('status', 'tersedia')->where('kondisi', 'baik');
+            }])
+            ->withCount('produkItems as stok_total')
+            ->latest()
+            ->paginate(12);
 
-        return view('alat.index', compact('alats'));
+        return view('alat.index', compact('produks'));
     }
 
     public function create(): View

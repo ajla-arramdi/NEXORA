@@ -44,9 +44,9 @@
                                 <div class="panel-muted p-5">
                                     <div class="grid gap-4 lg:grid-cols-[1fr_8rem_12rem] xl:grid-cols-[1fr_8rem_12rem_1fr]">
                                         <div>
-                                            <div class="text-lg font-semibold text-slate-900">{{ $detail->alat->nama_alat }}</div>
+                                            <div class="text-lg font-semibold text-slate-900">{{ $detail->produk->nama_produk }}</div>
                                             <div class="mt-1 text-sm text-slate-600">Jumlah pinjam {{ $detail->qty }} · Kondisi keluar {{ $detail->kondisi_keluar }}</div>
-                                            <input type="hidden" name="items[{{ $index }}][alat_id]" value="{{ $detail->alat_id }}">
+                                            <input type="hidden" name="items[{{ $index }}][produk_id]" value="{{ $detail->produk_id }}">
                                         </div>
                                         <div>
                                             <label class="text-sm font-semibold text-slate-700">Qty Kembali</label>

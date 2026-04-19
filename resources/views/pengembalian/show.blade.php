@@ -59,7 +59,7 @@
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th>Alat</th>
+                            <th>Produk</th>
                             <th>Qty</th>
                             <th>Kondisi Masuk</th>
                             <th>Catatan</th>
@@ -68,7 +68,7 @@
                     <tbody class="divide-y divide-stone-100 bg-white">
                         @foreach ($pengembalian->details as $detail)
                             <tr>
-                                <td>{{ $detail->alat->nama_alat }}</td>
+                                <td>{{ $detail->produk->nama_produk }}</td>
                                 <td>{{ $detail->qty_kembali }}</td>
                                 <td>{{ $detail->kondisi_masuk }}</td>
                                 <td>{{ $detail->catatan ?: '-' }}</td>

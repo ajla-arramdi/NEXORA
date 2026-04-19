@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Alat;
+use App\Models\Produk;
+use App\Models\ProdukItem;
 use App\Models\Pengembalian;
 use App\Models\Peminjaman;
 use App\Models\User;
@@ -59,8 +60,8 @@ class DashboardController extends Controller
 
         $stats = [
             'total_user'          => User::count(),
-            'total_alat'          => Alat::count(),
-            'alat_tersedia'       => Alat::sum('stok_tersedia'),
+            'total_alat'          => ProdukItem::count(),
+            'alat_tersedia'       => ProdukItem::where('status', 'tersedia')->where('kondisi', 'baik')->count(),
             'pengajuan_menunggu'  => (clone $peminjamanQuery)->where('status', 'diajukan')->count(),
             'total_pengembalian'  => (clone $pengembalianQuery)->count(),
         ];

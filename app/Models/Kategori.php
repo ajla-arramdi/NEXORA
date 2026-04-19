@@ -20,4 +20,9 @@ class Kategori extends Model
     {
         return $this->hasMany(Alat::class, 'kategori_id');
     }
+
+    public function subKategoris()
+    {
+        return $this->hasMany(SubKategori::class);
+    }
 }

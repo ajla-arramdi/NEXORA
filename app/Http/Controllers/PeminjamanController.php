@@ -19,7 +19,7 @@ class PeminjamanController extends Controller
     public function index(): View
     {
         $user = request()->user();
-        $query = Peminjaman::query()->with(['user', 'petugas', 'details.alat'])->latest();
+        $query = Peminjaman::query()->with(['user', 'petugas', 'details.produk'])->latest();
 
         if ($user->isPeminjam()) {
             $query->where('user_id', $user->id);
@@ -32,9 +32,18 @@ class PeminjamanController extends Controller
 
     public function create(): View
     {
-        $alats = Alat::query()->with('kategori')->where('stok_tersedia', '>', 0)->orderBy('nama_alat')->get();
+        $alats = \App\Models\Produk::query()->with('subKategori')
+            ->withCount(['produkItems as stok_tersedia' => function($q) {
+                $q->where('status', 'tersedia')->where('kondisi', 'baik');
+            }])
+            ->whereHas('produkItems', function($q) {
+                $q->where('status', 'tersedia')->where('kondisi', 'baik');
+            })
+            ->orderBy('nama_produk')
+            ->get();
+        $selectedAlatId = request('produk_id');
 
-        return view('peminjaman.create', compact('alats'));
+        return view('peminjaman.create', compact('alats', 'selectedAlatId'));
     }
 
     public function store(StorePeminjamanRequest $request): RedirectResponse
@@ -47,7 +56,7 @@ class PeminjamanController extends Controller
     public function show(Peminjaman $peminjaman): View
     {
         $this->authorizeView($peminjaman);
-        $peminjaman->load(['user', 'petugas', 'details.alat', 'pengembalian.details.alat']);
+        $peminjaman->load(['user', 'petugas', 'details.produk', 'details.produkItems', 'pengembalian.details.produk']);
 
         return view('peminjaman.show', compact('peminjaman'));
     }

@@ -8,6 +8,9 @@ use App\Http\Controllers\LogAktivitasController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SubKategoriController;
+use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\ProdukItemController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,13 +36,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/pengembalian/create', [PengembalianController::class, 'create'])->name('pengembalian.create');
     Route::post('/pengembalian', [PengembalianController::class, 'store'])->name('pengembalian.store');
     Route::get('/pengembalian/{pengembalian}', [PengembalianController::class, 'show'])->name('pengembalian.show');
+    
+    Route::get('/alat', [AlatController::class, 'index'])->name('alat.index');
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('/users', UserController::class)->except('show');
     Route::get('/log-aktivitas', [LogAktivitasController::class, 'index'])->name('log-aktivitas.index');
+    Route::resource('/sub-kategori', SubKategoriController::class);
+    Route::resource('/produk', ProdukController::class);
+    Route::resource('/produk-item', ProdukItemController::class);
     Route::resource('/kategori', KategoriController::class)->except('show');
-    Route::resource('/alat', AlatController::class)->except('show');
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
     Route::get('/laporan/print', [LaporanController::class, 'print'])->name('laporan.print');
 });

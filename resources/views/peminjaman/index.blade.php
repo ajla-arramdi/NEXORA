@@ -10,7 +10,7 @@
 <x-app-shell title="Data Peminjaman" subtitle="Pantau pengajuan, approval, dan detail transaksi peminjaman alat.">
     <x-slot name="actions">
         @if (auth()->user()->isPeminjam())
-            <a href="{{ route('peminjaman.create') }}" class="btn-primary">Ajukan Peminjaman</a>
+            <a href="{{ route('peminjaman.create') }}" class="btn-primary">Lihat Daftar Alat</a>
         @endif
     </x-slot>
 
