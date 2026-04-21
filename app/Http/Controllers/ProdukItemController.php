@@ -107,9 +107,11 @@ class ProdukItemController extends Controller
     public function destroy(ProdukItem $produkItem)
     {
         $kode = $produkItem->kode_barang;
+        $produkId = $produkItem->produk_id;
+
         $produkItem->delete();
         ActivityLogger::log(request()->user(), 'Menghapus produk item', 'ProdukItem', "Produk Item {$kode} berhasil dihapus.");
 
-        return redirect()->route('produk-item.index')->with('success', 'Produk Item berhasil dihapus.');
+        return redirect()->route('produk-item.index', ['produk_id' => $produkId])->with('success', 'Produk Item berhasil dihapus.');
     }
 }

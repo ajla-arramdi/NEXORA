@@ -12,14 +12,14 @@
     <x-slot name="header">
         <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div>
-                <h1 class="page-title">Dashboard Petugas</h1>
-                <p class="page-subtitle">Kelola approval peminjaman dan validasi pengembalian alat.</p>
+                <div class="text-xs font-semibold uppercase tracking-[0.28em] text-blue-600">Panel Petugas</div>
+                <h1 class="page-title mt-2">Dashboard Petugas</h1>
+                <p class="page-subtitle">Kelola approval peminjaman dan validasi pengembalian alat dari satu halaman kerja yang sederhana.</p>
             </div>
             <div class="badge badge-petugas">Role aktif: Petugas</div>
         </div>
     </x-slot>
 
-    {{-- Stat Cards --}}
     <div class="grid gap-4 md:grid-cols-3">
         <x-stat-card label="Menunggu Approval" :value="$menungguApproval" hint="Peminjaman belum diproses" />
         <x-stat-card label="Pengembalian Masuk" :value="$menungguPengembalian" hint="Retur belum diterima" />
@@ -27,15 +27,13 @@
     </div>
 
     <div class="grid gap-6 xl:grid-cols-2">
-
-        {{-- Antrian Peminjaman --}}
         <section class="panel overflow-hidden">
-            <div class="flex items-center justify-between border-b border-stone-200 px-6 py-5">
+            <div class="flex items-center justify-between border-b border-blue-100/80 px-6 py-5">
                 <div>
-                    <h2 class="text-lg font-semibold text-slate-900">Antrian Peminjaman</h2>
+                    <h2 class="text-lg font-semibold text-slate-950">Antrian Peminjaman</h2>
                     <p class="mt-1 text-sm text-slate-600">Peminjaman berstatus <span class="font-medium text-amber-600">Diajukan</span> yang perlu disetujui.</p>
                 </div>
-                <a href="{{ route('peminjaman.index') }}" class="text-sm font-semibold text-orange-700">Lihat semua</a>
+                <a href="{{ route('peminjaman.index') }}" class="text-sm font-semibold text-sky-700">Lihat semua</a>
             </div>
 
             <div class="overflow-x-auto">
@@ -48,11 +46,11 @@
                             <th class="text-right">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-stone-100 bg-white">
+                    <tbody class="divide-y divide-blue-100/70 bg-white/60">
                         @forelse ($peminjamanAntrian as $peminjaman)
                             <tr>
-                                <td class="font-semibold text-slate-900">
-                                    <a href="{{ route('peminjaman.show', $peminjaman) }}" class="hover:text-orange-700">
+                                <td class="font-semibold text-slate-950">
+                                    <a href="{{ route('peminjaman.show', $peminjaman) }}" class="hover:text-sky-700">
                                         {{ $peminjaman->kode_peminjaman }}
                                     </a>
                                 </td>
@@ -76,7 +74,7 @@
                         @empty
                             <tr>
                                 <td colspan="4" class="py-8 text-center text-sm text-slate-400">
-                                    ✅ Tidak ada antrian peminjaman.
+                                    Tidak ada antrian peminjaman.
                                 </td>
                             </tr>
                         @endforelse
@@ -85,14 +83,13 @@
             </div>
         </section>
 
-        {{-- Antrian Pengembalian --}}
         <section class="panel overflow-hidden">
-            <div class="flex items-center justify-between border-b border-stone-200 px-6 py-5">
+            <div class="flex items-center justify-between border-b border-blue-100/80 px-6 py-5">
                 <div>
-                    <h2 class="text-lg font-semibold text-slate-900">Antrian Pengembalian</h2>
+                    <h2 class="text-lg font-semibold text-slate-950">Antrian Pengembalian</h2>
                     <p class="mt-1 text-sm text-slate-600">Pengembalian berstatus <span class="font-medium text-amber-600">Diajukan</span> yang perlu diterima.</p>
                 </div>
-                <a href="{{ route('pengembalian.index') }}" class="text-sm font-semibold text-orange-700">Lihat semua</a>
+                <a href="{{ route('pengembalian.index') }}" class="text-sm font-semibold text-sky-700">Lihat semua</a>
             </div>
 
             <div class="overflow-x-auto">
@@ -105,11 +102,11 @@
                             <th class="text-right">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-stone-100 bg-white">
+                    <tbody class="divide-y divide-blue-100/70 bg-white/60">
                         @forelse ($pengembalianAntrian as $pengembalian)
                             <tr>
-                                <td class="font-semibold text-slate-900">
-                                    <a href="{{ route('pengembalian.show', $pengembalian) }}" class="hover:text-orange-700">
+                                <td class="font-semibold text-slate-950">
+                                    <a href="{{ route('pengembalian.show', $pengembalian) }}" class="hover:text-sky-700">
                                         {{ $pengembalian->peminjaman->kode_peminjaman }}
                                     </a>
                                 </td>
@@ -127,7 +124,7 @@
                         @empty
                             <tr>
                                 <td colspan="4" class="py-8 text-center text-sm text-slate-400">
-                                    ✅ Tidak ada antrian pengembalian.
+                                    Tidak ada antrian pengembalian.
                                 </td>
                             </tr>
                         @endforelse
@@ -135,6 +132,5 @@
                 </table>
             </div>
         </section>
-
     </div>
 </x-app-layout>

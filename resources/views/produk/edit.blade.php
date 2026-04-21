@@ -1,6 +1,6 @@
 <x-app-shell title="Edit Produk" subtitle="Perbarui informasi dan spesifikasi produk.">
     <div class="panel p-6 lg:p-8">
-        <form method="POST" action="{{ route('produk.update', $produk) }}" class="space-y-6">
+        <form method="POST" action="{{ route('produk.update', $produk) }}" enctype="multipart/form-data" class="space-y-6">
             @csrf
             @method('PUT')
 
@@ -27,8 +27,12 @@
                     <textarea id="deskripsi" name="deskripsi" rows="5" class="form-textarea">{{ old('deskripsi', $produk->deskripsi) }}</textarea>
                 </div>
                 <div>
-                    <label for="gambar" class="text-sm font-semibold text-slate-700">URL Gambar (Opsional)</label>
-                    <input id="gambar" name="gambar" type="text" value="{{ old('gambar', $produk->gambar) }}" class="form-input">
+                    <label for="gambar" class="text-sm font-semibold text-slate-700">Foto Produk (Opsional)</label>
+                    @if ($produk->gambar)
+                        <p class="mb-2 text-xs text-slate-500">File tersimpan: {{ $produk->gambar }}</p>
+                    @endif
+                    <input id="gambar" name="gambar" type="file" accept="image/*" class="form-input file:mr-4 file:rounded-lg file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100">
+                    <p class="mt-1 text-xs text-slate-500">Upload file baru jika ingin mengganti foto produk.</p>
                 </div>
             </div>
 

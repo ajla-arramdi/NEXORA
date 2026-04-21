@@ -42,16 +42,24 @@
                         <div class="mt-4 grid gap-4">
                             @foreach ($selectedPeminjaman->details as $index => $detail)
                                 <div class="panel-muted p-5">
-                                    <div class="grid gap-4 lg:grid-cols-[1fr_8rem_12rem] xl:grid-cols-[1fr_8rem_12rem_1fr]">
+                                    <div class="grid gap-4 {{ auth()->user()->isPeminjam() ? 'lg:grid-cols-[1fr_12rem]' : 'lg:grid-cols-[1fr_8rem_12rem] xl:grid-cols-[1fr_8rem_12rem_1fr]' }}">
                                         <div>
                                             <div class="text-lg font-semibold text-slate-900">{{ $detail->produk->nama_produk }}</div>
                                             <div class="mt-1 text-sm text-slate-600">Jumlah pinjam {{ $detail->qty }} · Kondisi keluar {{ $detail->kondisi_keluar }}</div>
                                             <input type="hidden" name="items[{{ $index }}][produk_id]" value="{{ $detail->produk_id }}">
+                                            @if (auth()->user()->isPeminjam())
+                                                <input type="hidden" name="items[{{ $index }}][qty_kembali]" value="{{ $detail->qty }}">
+                                                <input type="hidden" name="items[{{ $index }}][catatan]" value="">
+                                            @endif
                                         </div>
-                                        <div>
-                                            <label class="text-sm font-semibold text-slate-700">Qty Kembali</label>
-                                            <input type="number" min="0" max="{{ $detail->qty }}" name="items[{{ $index }}][qty_kembali]" value="{{ old('items.'.$index.'.qty_kembali', $detail->qty) }}" class="form-input" required>
-                                        </div>
+
+                                        @unless (auth()->user()->isPeminjam())
+                                            <div>
+                                                <label class="text-sm font-semibold text-slate-700">Qty Kembali</label>
+                                                <input type="number" min="0" max="{{ $detail->qty }}" name="items[{{ $index }}][qty_kembali]" value="{{ old('items.'.$index.'.qty_kembali', $detail->qty) }}" class="form-input" required>
+                                            </div>
+                                        @endunless
+
                                         <div>
                                             <label class="text-sm font-semibold text-slate-700">Kondisi Masuk</label>
                                             <select name="items[{{ $index }}][kondisi_masuk]" class="form-select" required>
@@ -60,10 +68,13 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div>
-                                            <label class="text-sm font-semibold text-slate-700">Catatan Item</label>
-                                            <input type="text" name="items[{{ $index }}][catatan]" value="{{ old('items.'.$index.'.catatan') }}" class="form-input">
-                                        </div>
+
+                                        @unless (auth()->user()->isPeminjam())
+                                            <div>
+                                                <label class="text-sm font-semibold text-slate-700">Catatan Item</label>
+                                                <input type="text" name="items[{{ $index }}][catatan]" value="{{ old('items.'.$index.'.catatan') }}" class="form-input">
+                                            </div>
+                                        @endunless
                                     </div>
                                 </div>
                             @endforeach

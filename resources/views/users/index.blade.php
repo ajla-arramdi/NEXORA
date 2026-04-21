@@ -1,4 +1,4 @@
-<x-app-shell title="Manajemen User" subtitle="Kelola akun admin, petugas, dan peminjam untuk kebutuhan demo dan operasional.">
+<x-app-shell title="Manajemen User" subtitle="Kelola akun admin, petugas, dan peminjam dengan tampilan yang lebih modern dan mudah dipantau.">
     <x-slot name="actions">
         <a href="{{ route('users.create') }}" class="btn-primary">Tambah User</a>
     </x-slot>
@@ -15,11 +15,11 @@
                         <th class="text-right">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-stone-100 bg-white">
+                <tbody class="divide-y divide-blue-100/70 bg-white/60">
                     @forelse ($users as $user)
                         <tr>
                             <td>
-                                <div class="font-semibold text-slate-900">{{ $user->name }}</div>
+                                <div class="font-semibold text-slate-950">{{ $user->name }}</div>
                             </td>
                             <td>{{ $user->email }}</td>
                             <td>
@@ -48,7 +48,7 @@
             </table>
         </div>
 
-        <div class="border-t border-stone-200 px-6 py-4">
+        <div class="border-t border-blue-100/80 px-6 py-4">
             {{ $users->links() }}
         </div>
     </div>

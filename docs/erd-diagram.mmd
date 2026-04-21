@@ -1,0 +1,115 @@
+erDiagram
+    USERS ||--o{ PEMINJAMANS : membuat
+    USERS ||--o{ PEMINJAMANS : menyetujui
+    USERS ||--o{ PENGEMBALIANS : menerima
+    USERS ||--o{ LOG_AKTIVITAS : mencatat
+
+    KATEGORIS ||--o{ SUB_KATEGORIS : memiliki
+    SUB_KATEGORIS ||--o{ PRODUKS : memiliki
+    PRODUKS ||--o{ PRODUK_ITEMS : memiliki
+    PRODUKS ||--o{ PEMINJAMAN_DETAILS : dipinjam_dalam
+    PRODUKS ||--o{ PENGEMBALIAN_DETAILS : dikembalikan_dalam
+
+    PEMINJAMANS ||--|{ PEMINJAMAN_DETAILS : memiliki
+    PEMINJAMANS ||--o| PENGEMBALIANS : menghasilkan
+
+    PEMINJAMAN_DETAILS ||--o{ PEMINJAMAN_DETAIL_ITEMS : memetakan
+    PRODUK_ITEMS ||--o{ PEMINJAMAN_DETAIL_ITEMS : dipakai
+
+    PENGEMBALIANS ||--|{ PENGEMBALIAN_DETAILS : memiliki
+
+    USERS {
+        bigint id PK
+        string name
+        string email
+        string password
+        string role
+    }
+
+    KATEGORIS {
+        bigint id PK
+        string nama
+        text deskripsi
+    }
+
+    SUB_KATEGORIS {
+        bigint id PK
+        bigint kategori_id FK
+        string nama_sub_kategori
+        text deskripsi
+    }
+
+    PRODUKS {
+        bigint id PK
+        bigint sub_kategori_id FK
+        string nama_produk
+        text deskripsi
+        text spesifikasi
+        string gambar
+    }
+
+    PRODUK_ITEMS {
+        bigint id PK
+        bigint produk_id FK
+        string kode_barang
+        enum status
+        enum kondisi
+    }
+
+    PEMINJAMANS {
+        bigint id PK
+        string kode_peminjaman
+        bigint user_id FK
+        bigint petugas_id FK
+        date tanggal_pinjam
+        date tanggal_rencana_kembali
+        string status
+        text catatan
+        timestamp approved_at
+    }
+
+    PEMINJAMAN_DETAILS {
+        bigint id PK
+        bigint peminjaman_id FK
+        bigint produk_id FK
+        int qty
+        string kondisi_keluar
+        text catatan
+    }
+
+    PEMINJAMAN_DETAIL_ITEMS {
+        bigint id PK
+        bigint peminjaman_detail_id FK
+        bigint produk_item_id FK
+    }
+
+    PENGEMBALIANS {
+        bigint id PK
+        bigint peminjaman_id FK
+        bigint diterima_oleh FK
+        date tanggal_kembali
+        string status
+        int hari_terlambat
+        decimal denda
+        text catatan
+    }
+
+    PENGEMBALIAN_DETAILS {
+        bigint id PK
+        bigint pengembalian_id FK
+        bigint produk_id FK
+        int qty_kembali
+        string kondisi_masuk
+        text catatan
+    }
+
+    LOG_AKTIVITAS {
+        bigint id PK
+        bigint user_id FK
+        string aktivitas
+        string entitas
+        bigint entitas_id
+        text deskripsi
+        json metadata
+        timestamp created_at
+    }

@@ -1,12 +1,13 @@
 @if (session('success'))
-    <div class="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
-        {{ session('success') }}
+    <div class="panel-muted border-cyan-200/80 bg-cyan-50/80 px-5 py-4 text-sm text-cyan-700">
+        <div class="font-semibold text-cyan-800">Berhasil.</div>
+        <div class="mt-1">{{ session('success') }}</div>
     </div>
 @endif
 
 @if ($errors->any())
-    <div class="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
-        <div class="font-semibold">Ada input yang perlu diperbaiki.</div>
+    <div class="rounded-[1.5rem] border border-rose-200/80 bg-rose-50/85 px-5 py-4 text-sm text-rose-700 shadow-sm">
+        <div class="font-semibold text-rose-800">Ada input yang perlu diperbaiki.</div>
         <ul class="mt-2 list-disc space-y-1 pl-5">
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>

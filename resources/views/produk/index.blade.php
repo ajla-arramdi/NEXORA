@@ -29,7 +29,7 @@
                             <td>
                                 <div class="flex justify-end gap-2">
                                     <a href="{{ route('produk.edit', $produk) }}" class="btn-secondary px-3 py-2">Edit</a>
-                                    <form method="POST" action="{{ route('produk.destroy', $produk) }}" onsubmit="return confirm('Hapus produk ini?')">
+                                    <form method="POST" action="{{ route('produk.destroy', $produk) }}" onsubmit="return confirm('Hapus produk ini beserta semua unit itemnya?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn-danger px-3 py-2">Hapus</button>

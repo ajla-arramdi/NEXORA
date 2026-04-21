@@ -26,4 +26,14 @@ class Produk extends Model
     {
         return $this->hasMany(ProdukItem::class);
     }
+
+    public function peminjamanDetails()
+    {
+        return $this->hasMany(PeminjamanDetail::class);
+    }
+
+    public function pengembalianDetails()
+    {
+        return $this->hasMany(PengembalianDetail::class);
+    }
 }

@@ -8,13 +8,28 @@ use App\Http\Controllers\LogAktivitasController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProdukItemImportExportController;
 use App\Http\Controllers\SubKategoriController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProdukItemController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome')->name('home');
+Route::get('/', function () {
+    $produks = \App\Models\Produk::query()
+        ->with('subKategori')
+        ->withCount(['produkItems as stok_tersedia' => function ($q) {
+            $q->where('status', 'tersedia')->where('kondisi', 'baik');
+        }])
+        ->whereHas('produkItems', function ($q) {
+            $q->where('status', 'tersedia')->where('kondisi', 'baik');
+        })
+        ->orderBy('nama_produk')
+        ->limit(8)
+        ->get();
+
+    return view('welcome', compact('produks'));
+})->name('home');
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -45,6 +60,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/log-aktivitas', [LogAktivitasController::class, 'index'])->name('log-aktivitas.index');
     Route::resource('/sub-kategori', SubKategoriController::class);
     Route::resource('/produk', ProdukController::class);
+    Route::get('/produk-item/export', [ProdukItemImportExportController::class, 'export'])->name('produk-item.export');
+    Route::post('/produk-item/import', [ProdukItemImportExportController::class, 'import'])->name('produk-item.import');
     Route::resource('/produk-item', ProdukItemController::class);
     Route::resource('/kategori', KategoriController::class)->except('show');
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');

@@ -14,7 +14,8 @@
     <x-slot name="header">
         <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div>
-                <h1 class="page-title">Dashboard {{ ucfirst($user->role) }}</h1>
+                <div class="text-xs font-semibold uppercase tracking-[0.28em] text-blue-600">Panel Admin</div>
+                <h1 class="page-title mt-2">Dashboard {{ ucfirst($user->role) }}</h1>
                 <p class="page-subtitle">
                     @if ($user->isAdmin())
                         Pantau user, inventaris, aktivitas sistem, dan laporan keseluruhan dari satu tempat.
@@ -41,12 +42,12 @@
 
     <div class="grid gap-6 xl:grid-cols-2">
         <section class="panel overflow-hidden">
-            <div class="flex items-center justify-between border-b border-stone-200 px-6 py-5">
+            <div class="flex items-center justify-between border-b border-blue-100/80 px-6 py-5">
                 <div>
                     <h2 class="text-lg font-semibold text-slate-900">Peminjaman terbaru</h2>
                     <p class="mt-1 text-sm text-slate-600">Ringkasan transaksi peminjaman terakhir.</p>
                 </div>
-                <a href="{{ route('peminjaman.index') }}" class="text-sm font-semibold text-orange-700">Lihat semua</a>
+                <a href="{{ route('peminjaman.index') }}" class="text-sm font-semibold text-sky-700">Lihat semua</a>
             </div>
 
             <div class="overflow-x-auto">
@@ -59,11 +60,11 @@
                             <th>Tanggal</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-stone-100 bg-white">
+                    <tbody class="divide-y divide-blue-100/70 bg-white">
                         @forelse ($peminjamanTerbaru as $peminjaman)
                             <tr>
                                 <td>
-                                    <a href="{{ route('peminjaman.show', $peminjaman) }}" class="font-semibold text-slate-900 hover:text-orange-700">
+                                    <a href="{{ route('peminjaman.show', $peminjaman) }}" class="font-semibold text-slate-900 hover:text-sky-700">
                                         {{ $peminjaman->kode_peminjaman }}
                                     </a>
                                 </td>
@@ -86,12 +87,12 @@
         </section>
 
         <section class="panel overflow-hidden">
-            <div class="flex items-center justify-between border-b border-stone-200 px-6 py-5">
+            <div class="flex items-center justify-between border-b border-blue-100/80 px-6 py-5">
                 <div>
                     <h2 class="text-lg font-semibold text-slate-900">Pengembalian terbaru</h2>
                     <p class="mt-1 text-sm text-slate-600">Pantau retur alat dan nominal denda.</p>
                 </div>
-                <a href="{{ route('pengembalian.index') }}" class="text-sm font-semibold text-orange-700">Lihat semua</a>
+                <a href="{{ route('pengembalian.index') }}" class="text-sm font-semibold text-sky-700">Lihat semua</a>
             </div>
 
             <div class="overflow-x-auto">
@@ -104,11 +105,11 @@
                             <th>Denda</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-stone-100 bg-white">
+                    <tbody class="divide-y divide-blue-100/70 bg-white">
                         @forelse ($pengembalianTerbaru as $pengembalian)
                             <tr>
                                 <td>
-                                    <a href="{{ route('pengembalian.show', $pengembalian) }}" class="font-semibold text-slate-900 hover:text-orange-700">
+                                    <a href="{{ route('pengembalian.show', $pengembalian) }}" class="font-semibold text-slate-900 hover:text-sky-700">
                                         {{ $pengembalian->peminjaman->kode_peminjaman }}
                                     </a>
                                 </td>

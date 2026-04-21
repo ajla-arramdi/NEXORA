@@ -7,7 +7,7 @@
     ];
 @endphp
 
-<x-app-shell title="Data Peminjaman" subtitle="Pantau pengajuan, approval, dan detail transaksi peminjaman alat.">
+<x-app-shell title="Data Peminjaman" subtitle="Pantau pengajuan, approval, dan detail transaksi peminjaman alat dalam tampilan yang lebih rapi.">
     <x-slot name="actions">
         @if (auth()->user()->isPeminjam())
             <a href="{{ route('peminjaman.create') }}" class="btn-primary">Lihat Daftar Alat</a>
@@ -27,10 +27,10 @@
                         <th class="text-right">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-stone-100 bg-white">
+                <tbody class="divide-y divide-blue-100/70 bg-white/60">
                     @forelse ($peminjamans as $peminjaman)
                         <tr>
-                            <td class="font-semibold text-slate-900">{{ $peminjaman->kode_peminjaman }}</td>
+                            <td class="font-semibold text-slate-950">{{ $peminjaman->kode_peminjaman }}</td>
                             <td>{{ $peminjaman->user->name }}</td>
                             <td>{{ $peminjaman->tanggal_pinjam->translatedFormat('d M Y') }}</td>
                             <td>{{ $peminjaman->tanggal_rencana_kembali->translatedFormat('d M Y') }}</td>
@@ -65,7 +65,7 @@
             </table>
         </div>
 
-        <div class="border-t border-stone-200 px-6 py-4">
+        <div class="border-t border-blue-100/80 px-6 py-4">
             {{ $peminjamans->links() }}
         </div>
     </div>

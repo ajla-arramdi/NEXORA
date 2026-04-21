@@ -1,6 +1,6 @@
 <x-app-shell title="Tambah Produk" subtitle="Masukkan produk baru ke dalam katalog.">
     <div class="panel p-6 lg:p-8">
-        <form method="POST" action="{{ route('produk.store') }}" class="space-y-6">
+        <form method="POST" action="{{ route('produk.store') }}" enctype="multipart/form-data" class="space-y-6">
             @csrf
 
             <div class="space-y-6">
@@ -26,8 +26,9 @@
                     <textarea id="deskripsi" name="deskripsi" rows="5" class="form-textarea">{{ old('deskripsi') }}</textarea>
                 </div>
                 <div>
-                    <label for="gambar" class="text-sm font-semibold text-slate-700">URL Gambar (Opsional)</label>
-                    <input id="gambar" name="gambar" type="text" value="{{ old('gambar') }}" class="form-input">
+                    <label for="gambar" class="text-sm font-semibold text-slate-700">Foto Produk (Opsional)</label>
+                    <input id="gambar" name="gambar" type="file" accept="image/*" class="form-input file:mr-4 file:rounded-lg file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100">
+                    <p class="mt-1 text-xs text-slate-500">Pilih file gambar dari perangkat Anda.</p>
                 </div>
             </div>
 

@@ -7,16 +7,14 @@
     ];
 @endphp
 
-<x-app-shell title="Approval Peminjaman" subtitle="Tinjau dan proses pengajuan peminjaman alat dari peminjam.">
+<x-app-shell title="Approval Peminjaman" subtitle="Tinjau dan proses pengajuan peminjaman alat dari peminjam dengan alur kerja yang lebih fokus.">
     <x-slot name="actions">
-        {{-- Filter status --}}
         <form method="GET" action="{{ route('petugas.peminjaman.index') }}" class="flex items-center gap-2">
-            <select name="status" onchange="this.form.submit()"
-                class="rounded-xl border border-stone-200 bg-white px-3 py-2 text-sm text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400">
+            <select name="status" onchange="this.form.submit()" class="form-select min-w-[180px]">
                 <option value="">Semua Status</option>
-                <option value="diajukan"     {{ request('status') === 'diajukan'     ? 'selected' : '' }}>Diajukan</option>
-                <option value="disetujui"    {{ request('status') === 'disetujui'    ? 'selected' : '' }}>Disetujui</option>
-                <option value="ditolak"      {{ request('status') === 'ditolak'      ? 'selected' : '' }}>Ditolak</option>
+                <option value="diajukan" {{ request('status') === 'diajukan' ? 'selected' : '' }}>Diajukan</option>
+                <option value="disetujui" {{ request('status') === 'disetujui' ? 'selected' : '' }}>Disetujui</option>
+                <option value="ditolak" {{ request('status') === 'ditolak' ? 'selected' : '' }}>Ditolak</option>
                 <option value="dikembalikan" {{ request('status') === 'dikembalikan' ? 'selected' : '' }}>Dikembalikan</option>
             </select>
         </form>
@@ -35,11 +33,11 @@
                         <th class="text-right">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-stone-100 bg-white">
+                <tbody class="divide-y divide-blue-100/70 bg-white/60">
                     @forelse ($peminjamans as $peminjaman)
                         <tr>
-                            <td class="font-semibold text-slate-900">
-                                <a href="{{ route('peminjaman.show', $peminjaman) }}" class="hover:text-orange-700">
+                            <td class="font-semibold text-slate-950">
+                                <a href="{{ route('peminjaman.show', $peminjaman) }}" class="hover:text-sky-700">
                                     {{ $peminjaman->kode_peminjaman }}
                                 </a>
                             </td>
@@ -77,7 +75,7 @@
             </table>
         </div>
 
-        <div class="border-t border-stone-200 px-6 py-4">
+        <div class="border-t border-blue-100/80 px-6 py-4">
             {{ $peminjamans->links() }}
         </div>
     </div>

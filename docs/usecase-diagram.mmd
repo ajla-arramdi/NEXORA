@@ -1,0 +1,57 @@
+flowchart LR
+    A[Admin]
+    P[Petugas]
+    U[Peminjam]
+
+    UC1((Login))
+    UC2((Kelola Profil))
+    UC3((Lihat Dashboard))
+    UC4((Kelola User))
+    UC5((Kelola Kategori))
+    UC6((Kelola Sub Kategori))
+    UC7((Kelola Produk))
+    UC8((Kelola Produk Item))
+    UC9((Export Produk Item XLSX))
+    UC10((Import Produk Item XLSX))
+    UC11((Lihat Log Aktivitas))
+    UC12((Lihat & Cetak Laporan))
+    UC13((Lihat Katalog Inventaris))
+    UC14((Ajukan Peminjaman))
+    UC15((Lihat Detail Peminjaman))
+    UC16((Approval / Tolak Peminjaman))
+    UC17((Ajukan Pengembalian))
+    UC18((Lihat Detail Pengembalian))
+    UC19((Terima Pengembalian))
+
+    A --> UC1
+    A --> UC2
+    A --> UC3
+    A --> UC4
+    A --> UC5
+    A --> UC6
+    A --> UC7
+    A --> UC8
+    A --> UC9
+    A --> UC10
+    A --> UC11
+    A --> UC12
+    A --> UC15
+    A --> UC18
+
+    P --> UC1
+    P --> UC2
+    P --> UC3
+    P --> UC15
+    P --> UC16
+    P --> UC17
+    P --> UC18
+    P --> UC19
+
+    U --> UC1
+    U --> UC2
+    U --> UC3
+    U --> UC13
+    U --> UC14
+    U --> UC15
+    U --> UC17
+    U --> UC18
